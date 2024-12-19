@@ -33,21 +33,23 @@ done
 # 初始化結果
 declare -A results
 
-while IFS= read -r line; do
-  # 跳過註解行
-  ## =~ 是Bash的正則表達式運算
-  [[ "$line" =~ ^# ]] && continue
+while IFS=$'\t' read -r unicode key value; do
+  [[ "$unicode" =~ ^# ]] && continue
 
-  # 從每行獲取 Unicode 項目和類型
-  unicode=$(echo "$line" | awk -F'\t' '{print $1}')
-  echo "$unicode"
-  key=$(echo "$line" | awk -F'\t' '{print $2}')
-  value=$(echo "$line" | awk -F'\t' '{print $3}')
+  echo "$unicode" # 使知道程式還有在執行
 
-  # 如果 key 為 kIRG_*，提取對應的值 (例如 "T4-2224" 的前綴)
+  # 僅處理 kIRG_* 開頭的 key (例如 "T4-2224" 的前綴)
   if [[ "$key" =~ ^kIRG_ ]]; then
-    prefix=$(echo "$value" | cut -d'-' -f1) # 取 T4、T6 等前綴
-    results["$key"]+="$prefix "
+    # 提取值的前綴部分，例如 "T4", "T6"
+    ## %% **最贪婪匹配**（greedy match）
+    prefix=${value%%-*}
+    echo "prefix $prefix"
+
+    cur_group="${results["$key"]}"
+    # if [[ ! "$cur_group" =~ $prefix ]]; then
+    if [[ ! "$cur_group" = "$prefix" ]]; then # 用這樣即可，不需要用到正規式
+        results["$key"]+="$prefix "
+    fi
   fi
 
 done < "$INPUT_FILE"
