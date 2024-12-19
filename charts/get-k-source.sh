@@ -30,6 +30,27 @@ done
 # kSource=$(echo "$k_types" | tr ' ' '\n' | grep ^kIRG)
 # echo "$kSource"
 
+
+# declare -A mapping # 如果少了declare結果會不對
+# mapping=(
+#   ["kIRG_JSource"]="日本"
+# )
+
+# 可以直接宣告加初始化
+declare -A mapping=(
+  ["kIRG_GSource"]="中國和新加坡"
+  ["kIRG_JSource"]="日本"
+  ["kIRG_TSource"]="TCA"
+  ["kIRG_KPSource"]="北韓"
+  ["kIRG_KSource"]="韓國"
+  ["kIRG_MSource"]="澳門特別行政區"
+  ["kIRG_SSource"]="SAT Daizōkyō 文字資料庫委員會"
+  ["kIRG_HSource"]="香港特別行政區"
+  ["kIRG_UKSource"]="英國"
+  ["kIRG_USource"]="UTC"
+  ["kIRG_VSource"]="越南"
+)
+
 # 初始化結果
 declare -A results
 
@@ -58,7 +79,11 @@ done < "$INPUT_FILE"
 # 遍歷並打印關聯數組內容
 echo -e '\033[44mResults:\033[0m'
 for key in "${!results[@]}"; do
-  echo "$key: ${results[$key]}"
+  if [[ -n "${mapping[$key]}" ]]; then
+    echo "${mapping[$key]}: $key: ${results[$key]}"
+  else
+    echo "$key: ${results[$key]}"
+  fi
 done
 
 echo "done"
