@@ -14,16 +14,8 @@ PDF之中會記錄以下內容
 | 來源            | 相關代號                                   | 描述                    |
 |---------------|----------------------------------------|-----------------------|
 | kIRG_GSource  | G1, G3, G4K, G5, G7, G8, GHZ, GKX, GHZ | 中國和新加坡                |
-| kIRG_HSource  | H, HB1, HB2                            | 香港特別行政區               |
-| kIRG_JSource  | J0, J1, J3A, J4, JMJ, J13, J14         | 日本                    |
-| kIRG_KPSource | KP1                                    | 北韓                    |
-| kIRG_KSource  | K4                                     | 韓國                    |
-| kIRG_MSource  | MD                                     | 澳門特別行政區               |
-| kIRG_SSource  | SAT                                    | SAT Daizōkyō 文字資料庫委員會 |
-| kIRG_TSource  | T6                                     | TCA                   |
-| kIRG_UKSource | UK                                     | 英國                    |
-| kIRG_USource  | UTC                                    | UTC                   |
-| kIRG_VSource  | VN                                     | 越南                    |
+
+> 🌈 有關整理的列表請參考: [kIRG_Source_mapping.md](kIRG_Source_mapping.md)
 
 ## FAQ
 

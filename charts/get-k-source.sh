@@ -1,8 +1,8 @@
 # bash get-k-source.sh
 
-# INPUT_FILE="../Unihan/Unihan_IRGSources.txt"
+INPUT_FILE="../Unihan/Unihan_IRGSources.txt"
 # head -n 66 "../Unihan/Unihan_IRGSources.txt" > "./test.txt" # 複製前100列當成測試資料
-INPUT_FILE="./test.txt" # 如果要測試，可以生一個小一點的測試資料
+# INPUT_FILE="./test.txt" # 如果要測試，可以生一個小一點的測試資料
 OUTPUT_FILE="./kIRG_Source_mapping.md"
 
 list_kFields() {
@@ -66,7 +66,6 @@ while IFS=$'\t' read -r unicode key value; do
     # 提取值的前綴部分，例如 "T4", "T6"
     ## %% **最贪婪匹配**（greedy match）
     prefix=${value%%-*}
-    echo "prefix $prefix"
 
     cur_group="${results["$key"]}"
     # if [[ ! "$cur_group" =~ $prefix ]]; then
@@ -74,8 +73,8 @@ while IFS=$'\t' read -r unicode key value; do
         results["$key"]+="$prefix "
     fi
   fi
-
 done < "$INPUT_FILE"
+
 # echo "$results" # <-- `declare -A results` 宣告了一個關聯數組，但你嘗試直接用 `echo "$results"` 打印整個數組，這是無效的。Bash 不支持直接打印關聯數組的方式，因此會導致輸出的 `$results` 看起來是空的
 
 echo -e "\033[44mWrite to $OUTPUT_FILE\033[0m"
