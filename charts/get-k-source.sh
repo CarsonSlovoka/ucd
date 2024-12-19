@@ -56,10 +56,13 @@ declare -A mapping=(
 declare -A results
 
 echo -e '\033[44mget IRG set\033[0m'
+
+counter=0
 while IFS=$'\t' read -r unicode key value; do
   [[ "$unicode" =~ ^# ]] && continue
 
-  echo "$unicode" # 使知道程式還有在執行
+  # echo "$unicode" # 使知道程式還有在執行, echo會拖速度，盡量避免
+  ((++counter % 2000 == 0)) && echo "Processed $counter lines"
 
   # 僅處理 kIRG_* 開頭的 key (例如 "T4-2224" 的前綴)
   if [[ "$key" =~ ^kIRG_ ]]; then
@@ -67,9 +70,10 @@ while IFS=$'\t' read -r unicode key value; do
     ## %% **最贪婪匹配**（greedy match）
     prefix=${value%%-*}
 
-    cur_group="${results["$key"]}"
-    # if [[ ! "$cur_group" =~ $prefix ]]; then
-    if [[ ! "$cur_group" = "$prefix" ]]; then # 用這樣即可，不需要用到正規式
+    # 取得當前已存在的組資料
+    cur_group="${results["$key"]:-}" # 若無值則設置默認為空
+    # if [[ ! "$cur_group" = "$prefix" ]]; then # 最差方式 ~~用這樣即可，不需要用到正規式~~ <-- 但兩者的速度天差地遠
+    if [[ ! "$cur_group" =~ $prefix ]]; then
         results["$key"]+="$prefix "
     fi
   fi
